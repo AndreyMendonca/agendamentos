@@ -5,13 +5,11 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { CircleUser, Menu } from "lucide-react"
 import { Button } from "../ui/button"
-import { ThemeToggle } from "../theme-toogle"
 
 export const ButtonOptions = () => {
     return (

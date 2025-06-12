@@ -1,5 +1,9 @@
+import Link from "next/link";
+
 export const Logo = () => {
     return (
-        <div className="text-xl mx-10 :mx-4">Agendamento<span className="font-bold">Flix</span></div>
+        <Link href="/">
+            <div className="text-xl mx-10 md:mx-4">Agendamento<span className="font-bold">Flix</span></div>
+        </Link>
     );
 }
