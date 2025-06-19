@@ -10,14 +10,14 @@ import { Switch } from "../ui/switch"
 
 
 const formSchema = z.object({
-    nome: z.string({ required_error: "Campo obrigatório" }),
-    sobrenome: z.string({ required_error: "Campo obrigatório" }),
+    nome: z.string().min(2, "Campo obrigatório"),
+    sobrenome: z.string().min(2, "Campo obrigatório"),
     especialidade: z.string().optional(),
     status: z.boolean({ required_error: "Campo é obrigatório" })
 })
 
 export const ProfessorCadastro = () => {
-    const [professor, setProfessor] = useState<Professor>();
+    const [professor, setProfessor] = useState<Professor | null>(null);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -25,11 +25,10 @@ export const ProfessorCadastro = () => {
             sobrenome: "",
             especialidade: "",
             status: true,
-            ...professor,
         },
     })
     const onSubmit = (values: z.infer<typeof formSchema>) => {
-        setProfessor(values);
+        console.log(values)
     }
 
     return (
@@ -73,10 +72,10 @@ export const ProfessorCadastro = () => {
                     name="especialidade"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Especialidade *</FormLabel>
+                            <FormLabel>Especialidade</FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Digite o edpecialidade"
+                                    placeholder="Digite a especialidade"
                                     {...field}
                                 />
                             </FormControl>
@@ -103,6 +102,10 @@ export const ProfessorCadastro = () => {
                         </FormItem>
                     )}
                 />
+                <div className="flex justify-end">
+                    <Button type="submit" className="flex-1 md:flex-none">Salvar</Button>
+                </div>
+
             </form>
         </Form>
     )

@@ -1,5 +1,5 @@
 import { Button } from "../ui/button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { ProfessorCadastro } from "./cadastro";
 
 type Props = {
@@ -13,13 +13,13 @@ export const ProfessorDialog = ( {open, onOpenChange}: Props) =>{
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Cadastro de Professores</DialogTitle>
+                    <DialogDescription>Os campos marcados com * são obrigatórios</DialogDescription>
                 </DialogHeader>
                 <ProfessorCadastro/>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant="outline" className="cursor-pointer">Cancelar</Button>
                     </DialogClose>
-                    <Button type="submit" className="cursor-pointer">Salvar</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
