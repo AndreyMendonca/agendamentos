@@ -7,6 +7,7 @@ import { Professor } from "@/app/types/Professor"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Switch } from "../ui/switch"
+import { toast } from "sonner"
 
 
 const formSchema = z.object({
@@ -29,6 +30,15 @@ export const ProfessorCadastro = () => {
     })
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         console.log(values)
+        const id = toast("Sucesso!", {
+            description: "Professor cadastrado com sucesso",
+            action: {
+                label: 'Fechar',
+                onClick: () => {
+                    toast.dismiss(id);
+                }
+            }
+        })
     }
 
     return (
