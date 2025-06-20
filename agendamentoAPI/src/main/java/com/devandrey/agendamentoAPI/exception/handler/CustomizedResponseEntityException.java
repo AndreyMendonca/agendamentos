@@ -1,7 +1,9 @@
 package com.devandrey.agendamentoAPI.exception.handler;
 
 import com.devandrey.agendamentoAPI.exception.ExceptionResponse;
+import com.devandrey.agendamentoAPI.exception.ResourceConflictCpfException;
 import com.devandrey.agendamentoAPI.exception.ResourceNotFoundException;
+import com.devandrey.agendamentoAPI.exception.ResourceUnprocessableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,5 +36,24 @@ public class CustomizedResponseEntityException {
                 request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ResourceConflictCpfException.class)
+    public final ResponseEntity<ExceptionResponse> handleConflictCpfException(Exception ex, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(ResourceUnprocessableException.class)
+    public final ResponseEntity<ExceptionResponse> handleUnprocessableException(Exception ex, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

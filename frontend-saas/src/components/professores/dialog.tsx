@@ -15,7 +15,7 @@ export const ProfessorDialog = ( {open, onOpenChange}: Props) =>{
                     <DialogTitle>Cadastro de Professores</DialogTitle>
                     <DialogDescription>Os campos marcados com * são obrigatórios</DialogDescription>
                 </DialogHeader>
-                <ProfessorCadastro/>
+                <ProfessorCadastro onOpenChange={onOpenChange}/>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant="outline" className="cursor-pointer">Cancelar</Button>

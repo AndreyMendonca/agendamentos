@@ -2,6 +2,7 @@ package com.devandrey.agendamentoAPI.controller;
 
 import com.devandrey.agendamentoAPI.controller.DTO.ProfessorDTO;
 import com.devandrey.agendamentoAPI.services.ProfessorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/professores")
+@CrossOrigin(origins = "*")
 public class ProfessorController {
     @Autowired
     private ProfessorService service;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProfessorDTO save(@RequestBody ProfessorDTO dto){
+    public ProfessorDTO save(@RequestBody @Valid ProfessorDTO dto){
         return service.save(dto);
     }
 
@@ -31,7 +33,7 @@ public class ProfessorController {
     }
 
     @PutMapping("/{id}")
-    public ProfessorDTO update(@PathVariable Long id,@RequestBody ProfessorDTO dto){
+    public ProfessorDTO update(@PathVariable Long id,@RequestBody @Valid ProfessorDTO dto){
         return service.update(id, dto);
     }
 

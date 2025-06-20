@@ -13,8 +13,11 @@ public class Professor {
     private Long id;
     private String nome;
     private String sobrenome;
+    @Column(unique = true)
+    private String cpf;
     private LocalDate nascimento;
     private String especialidade;
+    @Column()
     private Boolean status;
 
     public Professor(){}
@@ -74,6 +77,14 @@ public class Professor {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     @Override

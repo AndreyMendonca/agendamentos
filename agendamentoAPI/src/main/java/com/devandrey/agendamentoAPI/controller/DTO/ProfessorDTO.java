@@ -12,16 +12,18 @@ public class ProfessorDTO {
     @NotEmpty(message = "é obrigátorio")
     private String sobrenome;
     @CPF(message = "não é válido")
+    private String cpf;
     private LocalDate nascimento;
     private String especialidade;
     private Boolean status;
 
     public ProfessorDTO(){}
 
-    public ProfessorDTO(Long id, String nome, String sobrenome, LocalDate nascimento, String especialidade, Boolean status) {
+    public ProfessorDTO(Long id, String nome, String sobrenome, String cpf, LocalDate nascimento, String especialidade, Boolean status) {
         this.id = id;
         this.nome = nome;
         this.sobrenome = sobrenome;
+        this.cpf = cpf;
         this.nascimento = nascimento;
         this.especialidade = especialidade;
         this.status = status;
@@ -73,6 +75,14 @@ public class ProfessorDTO {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     @Override
