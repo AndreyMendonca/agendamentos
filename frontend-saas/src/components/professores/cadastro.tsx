@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils"
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from "../ui/calendar"
 import { useProfessorService } from "@/services/professor.service"
-import { ToastError } from "../toast/error"
 
 
 const formSchema = z.object({
@@ -44,7 +43,6 @@ export const ProfessorCadastro = ({ onOpenChange }: Props) => {
         },
     })
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values)
         try {
             await useService.salvar(values)
             toast.success("Sucesso!", {
