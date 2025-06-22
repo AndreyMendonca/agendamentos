@@ -26,8 +26,9 @@ const formSchema = z.object({
 
 type Props = {
     onOpenChange: (open: boolean) => void;
+    updatePage: () => void;
 }
-export const ProfessorCadastro = ({ onOpenChange }: Props) => {
+export const ProfessorCadastro = ({ onOpenChange, updatePage }: Props) => {
     const [professor, setProfessor] = useState<Professor | null>(null);
     const useService = useProfessorService();
     const [modalCalendario, setModalCalendario] = useState(false)
@@ -48,6 +49,7 @@ export const ProfessorCadastro = ({ onOpenChange }: Props) => {
             toast.success("Sucesso!", {
                 description: "Professor cadastrado com sucesso",
             })
+            updatePage();
             onOpenChange(false);
         } catch (error: any) {
             toast.error("Erro!", {

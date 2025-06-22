@@ -5,9 +5,10 @@ import { ProfessorCadastro } from "./cadastro";
 type Props = {
     open: boolean;
     onOpenChange : (open: boolean) => void;
+    updatePage: () => void;
 }
 
-export const ProfessorDialog = ( {open, onOpenChange}: Props) =>{
+export const ProfessorDialog = ( {open, onOpenChange, updatePage}: Props) =>{
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
@@ -15,7 +16,7 @@ export const ProfessorDialog = ( {open, onOpenChange}: Props) =>{
                     <DialogTitle>Cadastro de Professores</DialogTitle>
                     <DialogDescription>Os campos marcados com * são obrigatórios</DialogDescription>
                 </DialogHeader>
-                <ProfessorCadastro onOpenChange={onOpenChange}/>
+                <ProfessorCadastro onOpenChange={onOpenChange} updatePage={updatePage}/>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant="outline" className="cursor-pointer">Cancelar</Button>

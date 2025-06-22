@@ -37,7 +37,7 @@ export const Page = () => {
                     <DataTable columns={columns} data={professores} />
                 </CardDescription>
             </Card>
-            <ProfessorDialog open={openDialog} onOpenChange={setOpenDialog} />
+            <ProfessorDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos}/>
         </Template>
     )
 }
