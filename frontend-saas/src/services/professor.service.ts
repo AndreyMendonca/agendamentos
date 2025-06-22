@@ -1,4 +1,4 @@
-import { Professor } from "@/app/types/Professor";
+import { Professor } from "@/types/Professor";
 import axios from "axios";
 
 const api = axios.create({
@@ -27,6 +27,10 @@ class ProfessorService {
     async buscarTodos() : Promise<Professor[]>{
         const response = await api.get("professores");
         return response.data;
+    }
+
+    async deletar(id: number) :Promise<void> {
+        await api.delete(`professores/${id}`); 
     }
 
 }

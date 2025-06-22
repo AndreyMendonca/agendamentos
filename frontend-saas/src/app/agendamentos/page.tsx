@@ -3,6 +3,7 @@ import { AgendamentoDialog } from "@/components/agendamentos/dialog";
 import { Template } from "@/components/template/template";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CalendarClock } from "lucide-react";
 import { useState } from "react";
 
 export const Page = () => {
@@ -14,7 +15,10 @@ export const Page = () => {
                     <CardTitle>Agendamentos</CardTitle>
                     <CardDescription>Gerencimento de Agendamentos</CardDescription>
                     <CardAction>
-                        <Button onClick={() => setOpenDialog(true)}>Cadastrar</Button>
+                        <Button onClick={() => setOpenDialog(true)} className="cursor-pointer">
+                            Agendar
+                            <CalendarClock/>
+                        </Button>
                     </CardAction>
                 </CardHeader>
                 <CardDescription className="px-10">

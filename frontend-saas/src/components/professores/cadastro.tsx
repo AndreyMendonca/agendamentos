@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
-import { Professor } from "@/app/types/Professor"
+import { Professor } from "@/types/Professor"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Switch } from "../ui/switch"
@@ -191,7 +191,7 @@ export const ProfessorCadastro = ({ onOpenChange, updatePage }: Props) => {
                     )}
                 />
                 <div className="flex justify-end">
-                    <Button type="submit" className="flex-1 md:flex-none">Salvar</Button>
+                    <Button type="submit" className="flex-1 sm:flex-none">Salvar</Button>
                 </div>
 
             </form>

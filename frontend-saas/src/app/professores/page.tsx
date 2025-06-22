@@ -4,10 +4,11 @@ import { Template } from "@/components/template/template";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense, useEffect, useState } from "react";
-import { Professor } from "../types/Professor";
+import { Professor } from "../../types/Professor";
 import { useProfessorService } from "@/services/professor.service";
 import { columns } from "@/components/professores/table/columns";
 import { DataTable } from "@/components/professores/table/data-table";
+import { toast } from "sonner";
 
 export const Page = () => {
     const useService = useProfessorService();
@@ -18,9 +19,16 @@ export const Page = () => {
         const lista = await useService.buscarTodos();
         setProfessores(lista);
     }
+
+    const deletar = async (id: number) =>{
+        await useService.deletar(id);
+        toast.success("Sucesso",{
+            description: "Professor deletado com sucesso"
+        })
+    }
+
     useEffect(()=>{
         buscarTodos();
-        console.log(professores)
     },[])
 
     return (
@@ -34,7 +42,7 @@ export const Page = () => {
                     </CardAction>
                 </CardHeader>
                 <CardDescription className="px-10">
-                    <DataTable columns={columns} data={professores} />
+                    <DataTable columns={columns} data={professores}/>
                 </CardDescription>
             </Card>
             <ProfessorDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos}/>
