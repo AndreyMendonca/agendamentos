@@ -1,5 +1,6 @@
 package com.devandrey.agendamentoAPI.controller.DTO;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class ProfessorDTO {
     private String cpf;
     private LocalDate nascimento;
     private String especialidade;
+    @NotNull(message = "é obrigátorio")
     private Boolean status;
 
     public ProfessorDTO(){}

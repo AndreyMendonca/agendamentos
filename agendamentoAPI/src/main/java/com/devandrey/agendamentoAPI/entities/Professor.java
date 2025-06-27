@@ -17,7 +17,6 @@ public class Professor {
     private String cpf;
     private LocalDate nascimento;
     private String especialidade;
-    @Column()
     private Boolean status;
 
     public Professor(){}
