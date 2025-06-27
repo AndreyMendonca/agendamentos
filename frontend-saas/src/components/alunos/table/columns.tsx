@@ -1,19 +1,18 @@
 "use client"
-import { Button } from "@/components/ui/button";
-import { TableCell } from "@/components/ui/table";
+
+import { DialogDelete } from "@/components/dialog-delete"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { Estudante } from "@/types/Estudante"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, PencilIcon, Trash2 } from "lucide-react"
+import Link from "next/link"
+import { useState } from "react"
 
-export type Aluno = {
-    id: number;
-    nome: string;
-    whatsapp: string;
-}
-
-export const columns: ColumnDef<Aluno>[] = [
+export const columns = (onDeleteClick: (id: number) => void): ColumnDef<Estudante>[] => [
     {
         accessorKey: "nome",
-        header: ({column}) => {
+        header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
@@ -24,21 +23,50 @@ export const columns: ColumnDef<Aluno>[] = [
                 </Button>
             )
         },
-        cell: ({row}) => <TableCell className="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] font-medium">{row.getValue("nome")}</TableCell>
+    },
+    {
+        accessorKey: "sobrenome",
+        header: "Sobrenome",
     },
     {
         accessorKey: "whatsapp",
-        header: "Whatsapp"
+        header: "WhatsApp",
+        cell: ({row}) => {
+            const estudante = row.original;
+            return (
+                <Link href={`https://api.whatsapp.com/send/?phone=55${estudante.whatsapp}`} target="_blank">
+                    {estudante.whatsapp}
+                </Link>
+            )
+        }
     },
     {
-        header: "Ações",
+        id: "actions",
         cell: ({ row }) => {
-            const aluno = row.original
-            //consigo pegar o id do alunoo, so acessar aluno.id e podemos passar o id para fazer a deleção
+            const estudante = row.original;
+            
             return (
-                <div className="flex gap-2">
-                    <Button variant="outline" className="cursor-pointer">Editar</Button>
-                    <Button onClick={ () => {}} variant="destructive" className="cursor-pointer">Excluir</Button>
+                <div className="flex gap-5">
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant="outline" size="icon" className="rounded-full cursor-pointer">
+                                <PencilIcon />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Editar Professor</p>
+                        </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button onClick={() => estudante.id && onDeleteClick(estudante.id)}  variant="outline" size="icon" className="rounded-full cursor-pointer">
+                                <Trash2 />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Deletar Professor</p>
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
             )
         }

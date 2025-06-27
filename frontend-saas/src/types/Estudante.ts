@@ -1,16 +1,16 @@
 export type Estudante = {
-    id?: number;
+    id?: number | null;
     cpf: string;
     nome: string;
     sobrenome: string;
-    nascimento: string | null;
+    nascimento?: Date | null;
     cep: string;
     logradouro: string;
-    numeroCasa: string;
+    numeroCasa: number;
     bairro: string;
     estado: string;
     cidade: string;
-    telefone: string | null;
+    telefone?: string | null;
     whatsapp: string;
-    email: string;
+    email?: string | null;
 }

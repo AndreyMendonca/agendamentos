@@ -1,12 +1,6 @@
 import { Professor } from "@/types/Professor";
 import axios from "axios";
-
-const api = axios.create({
-    baseURL: "http://localhost:8080/",
-    headers: {
-        "Content-Type": "application/json",
-    },
-});
+import { api } from "./axios";
 
 class ProfessorService {
     async salvar(professor: Professor): Promise<void> {

@@ -4,9 +4,10 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 type Props = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    onConfirm: () => void;
 }
 
-export const DialogDelete = ({ open, onOpenChange }: Props) => {
+export const DialogDelete = ({ open, onOpenChange, onConfirm }: Props) => {
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent>
@@ -17,8 +18,8 @@ export const DialogDelete = ({ open, onOpenChange }: Props) => {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction>Sim, quero excluir!</AlertDialogAction>
+                    <AlertDialogCancel className="cursor-pointer">Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={onConfirm} className="cursor-pointer">Sim, quero excluir!</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

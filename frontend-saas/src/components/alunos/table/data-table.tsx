@@ -1,13 +1,14 @@
 "use client"
+
 import {
     ColumnDef,
     ColumnFiltersState,
+    SortingState,
     flexRender,
     getCoreRowModel,
+    getSortedRowModel,
     getFilteredRowModel,
     useReactTable,
-    SortingState,
-    getSortedRowModel,
 } from "@tanstack/react-table"
 
 import {
@@ -18,9 +19,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -29,10 +29,10 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({
     columns,
-    data,
+    data
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
     )
     const table = useReactTable({
@@ -49,12 +49,11 @@ export function DataTable<TData, TValue>({
         },
     })
 
-
     return (
         <div className="flex flex-col gap-3">
             <div className="flex items-center">
                 <Input
-                    placeholder="Filter nome..."
+                    placeholder="Procurar por CPF e nome"
                     value={(table.getColumn("nome")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("nome")?.setFilterValue(event.target.value)
@@ -69,7 +68,7 @@ export function DataTable<TData, TValue>({
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                    <TableHead key={header.id} className="py-2">
+                                    <TableHead key={header.id}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -87,7 +86,7 @@ export function DataTable<TData, TValue>({
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
-                            //data-state={row.getIsSelected() && "selected"}
+                                data-state={row.getIsSelected() && "selected"}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>
@@ -99,14 +98,13 @@ export function DataTable<TData, TValue>({
                     ) : (
                         <TableRow>
                             <TableCell colSpan={columns.length} className="h-24 text-center">
-                                Nenhum cadastro
+                                Nenhum cadastro realizado
                             </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
+            </div>
         </div>
-        </div>
-
     )
 }

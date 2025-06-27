@@ -10,27 +10,31 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
+import { Estudante } from "@/types/Estudante";
 
 const formSchema = z.object({
     cpf: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     nome: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     sobrenome: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
-    nascimento: z.date().optional(),
+    nascimento: z.date().optional().nullable(),
     cep: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     logradouro: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
-    numeroCasa: z.number({ invalid_type_error: "Erro", required_error: "campo é obrigatório" }),
+    numeroCasa: z.number(),
     bairro: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     estado: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     cidade: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
-    telefone: z.string().optional(),
+    telefone: z.string().optional().nullable(),
     whatsapp: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
-    email: z.string().email("E-mail invalido").optional()
+    email: z.string().email("E-mail invalido").optional().nullable(),
 })
 
 type Props = {
     onOpenChange: (open: boolean) => void;
+    updatePage: () => void;
+    save: (estudante: Estudante) => void;
 }
-export const AlunoCadastro = ({ onOpenChange }: Props) => {
+export const AlunoCadastro = ({ onOpenChange, updatePage, save }: Props) => {
+    const [estudante, setEstudante] = useState<Estudante | null>(null)
     const [modalCalendario, setModalCalendario] = useState(false)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -40,12 +44,16 @@ export const AlunoCadastro = ({ onOpenChange }: Props) => {
             cpf: "",
             cep: "",
             logradouro: "",
-            numeroCasa: 0,
+            telefone: undefined,
+            nascimento: undefined,
+            numeroCasa: undefined,
         }
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values)
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        await save(values);
+        onOpenChange(false);
+        updatePage();
     }
 
     return (

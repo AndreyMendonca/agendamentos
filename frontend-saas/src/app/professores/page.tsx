@@ -2,13 +2,14 @@
 import { ProfessorDialog } from "@/components/professores/dialog";
 import { Template } from "@/components/template/template";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense, useEffect, useState } from "react";
 import { Professor } from "../../types/Professor";
 import { useProfessorService } from "@/services/professor.service";
 import { columns } from "@/components/professores/table/columns";
 import { DataTable } from "@/components/professores/table/data-table";
 import { toast } from "sonner";
+import { UserRoundPlus } from "lucide-react";
 
 export const Page = () => {
     const useService = useProfessorService();
@@ -38,12 +39,15 @@ export const Page = () => {
                     <CardTitle>Professores</CardTitle>
                     <CardDescription>Gerencimento de professores</CardDescription>
                     <CardAction>
-                        <Button onClick={() => setOpenDialog(true)}>Cadastrar</Button>
+                        <Button onClick={() => setOpenDialog(true)}>
+                            Cadastrar
+                            <UserRoundPlus/>
+                        </Button>
                     </CardAction>
                 </CardHeader>
-                <CardDescription className="px-10">
+                <CardContent>
                     <DataTable columns={columns} data={professores}/>
-                </CardDescription>
+                </CardContent>
             </Card>
             <ProfessorDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos}/>
         </Template>

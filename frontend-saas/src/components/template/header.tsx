@@ -16,7 +16,7 @@ export const Header = () => {
                             <NavigationMenuList>
                                 <NavigationMenuItem>
                                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                                        <Link href="alunos">Alunos</Link>
+                                        <Link href="estudantes">Estudantes</Link>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
