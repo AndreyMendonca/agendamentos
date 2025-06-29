@@ -1,15 +1,12 @@
 "use client"
-
-import { DialogDelete } from "@/components/dialog-delete"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Estudante } from "@/types/Estudante"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, PencilIcon, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
 
-export const columns = (onDeleteClick: (id: number) => void): ColumnDef<Estudante>[] => [
+export const columns = (onDeleteClick: (id: number) => void, onUpdateClick: (estudante: Estudante) => void): ColumnDef<Estudante>[] => [
     {
         accessorKey: "nome",
         header: ({ column }) => {
@@ -55,7 +52,7 @@ export const columns = (onDeleteClick: (id: number) => void): ColumnDef<Estudant
                 <div className="flex gap-5">
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant="outline" size="icon" className="rounded-full cursor-pointer">
+                            <Button onClick={() => onUpdateClick(estudante)} variant="outline" size="icon" className="rounded-full cursor-pointer">
                                 <PencilIcon />
                             </Button>
                         </TooltipTrigger>

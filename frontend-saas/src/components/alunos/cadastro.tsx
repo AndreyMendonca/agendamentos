@@ -33,40 +33,48 @@ type Props = {
     onOpenChange: (open: boolean) => void;
     updatePage: () => void;
     save: (estudante: Estudante) => void;
+    update: (estudante: Estudante, id: number) => void;
+    estudante: Estudante | null;
 }
-export const AlunoCadastro = ({ onOpenChange, updatePage, save }: Props) => {
-    const [estudante, setEstudante] = useState<Estudante | null>(null)
+export const AlunoCadastro = ({ onOpenChange, updatePage, save, update, estudante }: Props) => {
     const [modalCalendario, setModalCalendario] = useState(false)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            nome: "",
-            sobrenome: "",
-            cpf: "",
-            cep: "",
-            logradouro: "",
-            bairro: "",
-            estado: "",
-            cidade: "",
-            telefone: "",
-            whatsapp: "",
-            email: "",
-            nascimento: undefined,
+            nome: estudante?.nome ?? "",
+            sobrenome: estudante?.sobrenome ?? "",
+            cpf: estudante?.cpf ?? "",
+            cep: estudante?.cep ?? "",
+            logradouro: estudante?.logradouro ?? "",
+            bairro: estudante?.bairro ?? "",
+            estado: estudante?.estado ?? "",
+            cidade: estudante?.cidade ?? "",
+            telefone: estudante?.telefone ?? "",
+            whatsapp: estudante?.whatsapp ?? "",
+            email:  estudante?.email ?? "",
+            nascimento: estudante?.nascimento ? new Date(estudante.nascimento) : undefined,
+            numeroCasa : estudante?.numeroCasa ?? undefined
         }
     })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try{
-            await save(values);
+            if(estudante === null){
+                await save(values)
+            }else{
+                await update(values, estudante.id!);
+            }
             onOpenChange(false);
             updatePage();
         }catch(error: any){
-             toast.error("Erro!",{
+            toast.error("Erro!",{
                 description: error.message
             });
         }
        
     }
+
+    console.log(estudante?.nome);
 
     return (
         <Form {...form}>

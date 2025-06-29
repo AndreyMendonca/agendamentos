@@ -7,10 +7,12 @@ type Props = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     save: (estudante: Estudante) => void;
+    update: (estudante: Estudante, id: number) => void;
     updatePage: () => void;
+    estudante: Estudante | null
 }
 
-export const AlunoDialog = ({ open, onOpenChange, save, updatePage }: Props) => {
+export const AlunoDialog = ({ open, onOpenChange, save, update, updatePage, estudante }: Props) => {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-h-[90vh] overflow-y-auto">
@@ -18,7 +20,7 @@ export const AlunoDialog = ({ open, onOpenChange, save, updatePage }: Props) => 
                     <DialogTitle>Cadastro de Estudante</DialogTitle>
                     <DialogDescription>Os campos marcados com * são obrigatórios</DialogDescription>
                 </DialogHeader>
-                <AlunoCadastro onOpenChange={onOpenChange} save={save} updatePage={updatePage}/>
+                <AlunoCadastro onOpenChange={onOpenChange} save={save} update={update} updatePage={updatePage} estudante={estudante}/>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant="outline" className="cursor-pointer">Cancelar</Button>

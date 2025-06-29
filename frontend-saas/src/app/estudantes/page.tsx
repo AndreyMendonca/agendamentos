@@ -19,28 +19,60 @@ export const Page = () => {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [estudantes, setEstudantes] = useState<Estudante[]>([]);
     const [idDelete, setIdDelete] = useState<number>(0);
+    const [estudante, setEstudante] = useState<Estudante | null>(null);
 
     const buscarTodos = async () => {
         const lista = await useService.buscarTodos();
         setEstudantes(lista);
     }
 
+    const handleDelete = async () => {
+        try {
+            await useService.deletar(idDelete);
+            toast("Sucesso", {
+                description: "Deleção feita com sucesso!"
+            })
+            buscarTodos();
+        } catch (error: any) {
+            toast.error("Erro!", {
+                description: error.message
+            });
+        }
+    }
+
     const handleDeleteClick = async (id: number) => {
         setOpenDeleteDialog(true)
         setIdDelete(id);
     };
-    const columnsAluno = columns(handleDeleteClick)
+    const handleUpdateClick = (estudante: Estudante) => {
+        setOpenDialog(true)
+        setEstudante(estudante)
+    }
+    const columnsAluno = columns(handleDeleteClick, handleUpdateClick)
 
     const handleSalvar = async (estudante: Estudante) => {
-            await useService.salvar(estudante);
-            toast.success("Sucesso", {
-                description: "Estudante salvo com sucesso"
-            })
+        await useService.salvar(estudante);
+        toast.success("Sucesso", {
+            description: "Estudante salvo com sucesso!"
+        })
+    }
+
+    const handleUpdate = async (estudante: Estudante, id: number) => {
+        await useService.salvar(estudante, id)
+        toast.success("Sucesso", {
+            description: "Estudante atualizado com sucesso!"
+        })
     }
 
     useEffect(() => {
         buscarTodos();
     }, [])
+
+    useEffect(() => {
+        if (!openDialog) {
+            setEstudante(null);
+        }
+    }, [openDialog]);
 
     return (
         <Template>
@@ -49,7 +81,7 @@ export const Page = () => {
                     <CardTitle>Estudantes</CardTitle>
                     <CardDescription>Gerencimento de estudantes</CardDescription>
                     <CardAction>
-                        <Button onClick={() => setOpenDialog(true)}>
+                        <Button onClick={() => setOpenDialog(true)} className="cursor-pointer">
                             Cadastrar
                             <UserRoundPlus />
                         </Button>
@@ -59,17 +91,11 @@ export const Page = () => {
                     <DataTable columns={columnsAluno} data={estudantes} />
                 </CardContent>
             </Card>
-            <AlunoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleSalvar} />
+            <AlunoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleSalvar} update={handleUpdate} estudante={estudante} />
             <DialogDelete
                 open={openDeleteDialog}
                 onOpenChange={setOpenDeleteDialog}
-                onConfirm={async () => {
-                    await useService.deletar(idDelete);
-                    toast("Sucesso", {
-                        description: "Deleção feita com sucesso!"
-                    })
-                    buscarTodos();
-                }}
+                onConfirm={handleDelete}
             />
         </Template>
     )
