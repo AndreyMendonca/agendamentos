@@ -32,10 +32,10 @@ export const Page = () => {
     const columnsAluno = columns(handleDeleteClick)
 
     const handleSalvar = async (estudante: Estudante) => {
-        await useService.salvar(estudante);
-        toast.success("Sucesso", {
-            description: "Estudante salvo com sucesso"
-        })
+            await useService.salvar(estudante);
+            toast.success("Sucesso", {
+                description: "Estudante salvo com sucesso"
+            })
     }
 
     useEffect(() => {
@@ -59,7 +59,7 @@ export const Page = () => {
                     <DataTable columns={columnsAluno} data={estudantes} />
                 </CardContent>
             </Card>
-            <AlunoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleSalvar}/>
+            <AlunoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleSalvar} />
             <DialogDelete
                 open={openDeleteDialog}
                 onOpenChange={setOpenDeleteDialog}

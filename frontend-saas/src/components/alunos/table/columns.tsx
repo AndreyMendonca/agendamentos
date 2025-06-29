@@ -23,10 +23,16 @@ export const columns = (onDeleteClick: (id: number) => void): ColumnDef<Estudant
                 </Button>
             )
         },
+        cell: ({row}) => {
+            const estudante  = row.original;
+            return (
+                <p>{estudante.nome} {estudante.sobrenome}</p>
+            )
+        }
     },
     {
-        accessorKey: "sobrenome",
-        header: "Sobrenome",
+        accessorKey: "cpf",
+        header: "CPF",
     },
     {
         accessorKey: "whatsapp",

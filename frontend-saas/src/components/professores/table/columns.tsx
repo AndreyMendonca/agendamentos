@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, PencilIcon, Trash2 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 
 export const columns: ColumnDef<Professor>[] = [
     {
@@ -19,10 +20,12 @@ export const columns: ColumnDef<Professor>[] = [
                 </Button>
             )
         },
-    },
-    {
-        accessorKey: "sobrenome",
-        header: "Sobrenome",
+        cell: ({row}) => {
+            const professor =  row.original;
+            return (
+                <p>{professor.nome} {professor.sobrenome}</p>
+            )
+        }
     },
     {
         accessorKey: "especialidade",
@@ -51,6 +54,19 @@ export const columns: ColumnDef<Professor>[] = [
                 </Button>
             )
         },
+        cell: ({row}) => {
+            const ativo: boolean = row.original.status;
+            return (
+                <div className="ml-3">
+                    {
+                        ativo ?
+                            <Badge variant="outline" className="px-3 py-2">Ativo </Badge> :
+                            <Badge variant="secondary" className="px-2 py-2">Inativo</Badge>
+                    }
+                </div>
+                
+            )
+        }
     },
     {
         id: "actions",

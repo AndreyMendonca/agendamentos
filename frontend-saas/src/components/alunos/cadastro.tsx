@@ -11,21 +11,22 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { Estudante } from "@/types/Estudante";
+import { toast } from "sonner";
 
 const formSchema = z.object({
     cpf: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     nome: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     sobrenome: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
-    nascimento: z.date().optional().nullable(),
+    nascimento: z.date().optional(),
     cep: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     logradouro: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     numeroCasa: z.number(),
     bairro: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     estado: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
     cidade: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
-    telefone: z.string().optional().nullable(),
+    telefone: z.string().optional(),
     whatsapp: z.string({required_error: "campo é obrigatório" }).min(2, "Campo obrigatório"),
-    email: z.string().email("E-mail invalido").optional().nullable(),
+    email: z.string().optional(),
 })
 
 type Props = {
@@ -44,16 +45,27 @@ export const AlunoCadastro = ({ onOpenChange, updatePage, save }: Props) => {
             cpf: "",
             cep: "",
             logradouro: "",
-            telefone: undefined,
+            bairro: "",
+            estado: "",
+            cidade: "",
+            telefone: "",
+            whatsapp: "",
+            email: "",
             nascimento: undefined,
-            numeroCasa: undefined,
         }
     })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        await save(values);
-        onOpenChange(false);
-        updatePage();
+        try{
+            await save(values);
+            onOpenChange(false);
+            updatePage();
+        }catch(error: any){
+             toast.error("Erro!",{
+                description: error.message
+            });
+        }
+       
     }
 
     return (
@@ -196,6 +208,7 @@ export const AlunoCadastro = ({ onOpenChange, updatePage, save }: Props) => {
                                     placeholder="Digite o nome"
                                     {...field}
                                     onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                    value={field.value ?? ""}
                                 />
                             </FormControl>
                             <FormMessage />
@@ -255,7 +268,7 @@ export const AlunoCadastro = ({ onOpenChange, updatePage, save }: Props) => {
                     name="telefone"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Telefone *</FormLabel>
+                            <FormLabel>Telefone</FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="Digite o telefone"
@@ -287,7 +300,7 @@ export const AlunoCadastro = ({ onOpenChange, updatePage, save }: Props) => {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email *</FormLabel>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
                                 <Input
                                     type="email"
