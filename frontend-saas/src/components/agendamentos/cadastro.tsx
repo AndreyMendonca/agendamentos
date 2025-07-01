@@ -5,11 +5,14 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { ChevronDown, ChevronDownIcon, Command } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { CommandGroup, CommandInput, CommandItem } from "../ui/command";
+import { AgendamentoSelect } from "./select";
+import { Professor } from "@/types/Professor";
+import { useProfessorService } from "@/services/professor.service";
 
 const formSchema = z.object({
     dataAgendamento: z.date(),
@@ -24,8 +27,10 @@ type Props = {
 }
 
 export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
+    const professorService = useProfessorService();
     const [open, setOpen] = useState(false)
     const [date, setDate] = useState<Date | undefined>(undefined)
+    const [professores, setProfessores] = useState<Professor[]>([]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -35,6 +40,15 @@ export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         console.log('submit')
     }
+
+    const pegarProfessores = async () => {
+        const lista = await professorService.buscarTodos();
+        setProfessores(lista);
+    }
+
+    useEffect(()=>{
+        pegarProfessores();
+    },[])
 
     return (
         <Form {...form}>
@@ -102,9 +116,9 @@ export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
                         </div>
 
                     </div>
-                    <div className="flex flex-col p-2 flex-1 gap-2 border-4">
+                    <div className="flex flex-col flex-1 gap-2">
                         <div className="flex gap-2">
-                            <div className="flex-1 border-2">
+                            <div className="flex-1">
                                 <FormField
                                     control={form.control}
                                     name="professor"
@@ -112,7 +126,7 @@ export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
                                         <FormItem>
                                             <FormLabel>Professor</FormLabel>
                                             <FormControl>
-                                                {/* Logica para buscar os professores */}
+                                                <AgendamentoSelect professores={professores} /> 
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

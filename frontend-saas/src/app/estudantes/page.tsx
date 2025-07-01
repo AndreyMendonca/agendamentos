@@ -68,12 +68,6 @@ export const Page = () => {
         buscarTodos();
     }, [])
 
-    useEffect(() => {
-        if (!openDialog) {
-            setEstudante(null);
-        }
-    }, [openDialog]);
-
     return (
         <Template>
             <Card className="mx-5">
@@ -81,7 +75,7 @@ export const Page = () => {
                     <CardTitle>Estudantes</CardTitle>
                     <CardDescription>Gerencimento de estudantes</CardDescription>
                     <CardAction>
-                        <Button onClick={() => setOpenDialog(true)} className="cursor-pointer">
+                        <Button onClick={() => {setEstudante(null); setOpenDialog(true)}} className="cursor-pointer">
                             Cadastrar
                             <UserRoundPlus />
                         </Button>

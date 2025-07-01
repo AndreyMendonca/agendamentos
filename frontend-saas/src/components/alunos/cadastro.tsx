@@ -196,7 +196,7 @@ export const AlunoCadastro = ({ onOpenChange, updatePage, save, update, estudant
                             <FormLabel>Endereço *</FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Digite o nome"
+                                    placeholder="Digite o endereço"
                                     {...field}
                                 />
                             </FormControl>
@@ -213,7 +213,7 @@ export const AlunoCadastro = ({ onOpenChange, updatePage, save, update, estudant
                             <FormControl>
                                 <Input
                                     type="number"
-                                    placeholder="Digite o nome"
+                                    placeholder="Digite o número do imovel"
                                     {...field}
                                     onChange={(e) => field.onChange(e.target.valueAsNumber)}
                                     value={field.value ?? ""}
@@ -312,7 +312,7 @@ export const AlunoCadastro = ({ onOpenChange, updatePage, save, update, estudant
                             <FormControl>
                                 <Input
                                     type="email"
-                                    placeholder="Digite o whatsapp"
+                                    placeholder="Digite o e-mail"
                                     {...field}
                                 />
                             </FormControl>
