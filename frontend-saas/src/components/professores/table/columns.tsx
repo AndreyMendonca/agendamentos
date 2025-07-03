@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, PencilIcon, Trash2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
-export const columns: ColumnDef<Professor>[] = [
+export const columns=(onDeleteClick: (id: number) => void, onUpdateClick: (professor: Professor) => void): ColumnDef<Professor>[] => [
     {
         accessorKey: "nome",
         header: ({ column }) => {
@@ -76,7 +76,7 @@ export const columns: ColumnDef<Professor>[] = [
                 <div className="flex gap-5">
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant="outline" size="icon" className="rounded-full cursor-pointer">
+                            <Button onClick={() => onUpdateClick(professor)}  variant="outline" size="icon" className="rounded-full cursor-pointer">
                                 <PencilIcon />
                             </Button>
                         </TooltipTrigger>
@@ -86,7 +86,7 @@ export const columns: ColumnDef<Professor>[] = [
                     </Tooltip>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant="outline" size="icon" className="rounded-full cursor-pointer">
+                            <Button onClick={() => professor.id && onDeleteClick(professor.id)} variant="outline" size="icon" className="rounded-full cursor-pointer">
                                 <Trash2 />
                             </Button>
                         </TooltipTrigger>

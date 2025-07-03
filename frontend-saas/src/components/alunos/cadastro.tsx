@@ -74,7 +74,6 @@ export const AlunoCadastro = ({ onOpenChange, updatePage, save, update, estudant
        
     }
 
-    console.log(estudante?.nome);
 
     return (
         <Form {...form}>

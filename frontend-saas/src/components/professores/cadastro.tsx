@@ -12,7 +12,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from "../ui/calendar"
-import { useProfessorService } from "@/services/professor.service"
 
 
 const formSchema = z.object({
@@ -27,28 +26,30 @@ const formSchema = z.object({
 type Props = {
     onOpenChange: (open: boolean) => void;
     updatePage: () => void;
+    professor: Professor | null;
+    save: (professor: Professor) => void;
+    update: (professor:Professor, id: number) => void;
 }
-export const ProfessorCadastro = ({ onOpenChange, updatePage }: Props) => {
-    const [professor, setProfessor] = useState<Professor | null>(null);
-    const useService = useProfessorService();
+export const ProfessorCadastro = ({ onOpenChange, updatePage, professor, save, update }: Props) => {
     const [modalCalendario, setModalCalendario] = useState(false)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            nome: "",
-            sobrenome: "",
-            cpf: "",
-            especialidade: "",
-            status: true,
+            nome: professor?.nome ?? "",
+            sobrenome: professor?.sobrenome ?? "",
+            cpf: professor?.cpf ?? "",
+            especialidade: professor?.especialidade ?? "",
+            status: professor?.status ?? true,
         },
     })
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await useService.salvar(values)
-            toast.success("Sucesso!", {
-                description: "Professor cadastrado com sucesso",
-            })
+            if(professor === null){
+                await save(values)
+            }else{
+                await update(values, professor.id!)
+            }
             updatePage();
             onOpenChange(false);
         } catch (error: any) {

@@ -3,9 +3,11 @@ import axios from "axios";
 import { api } from "./axios";
 
 class ProfessorService {
-    async salvar(professor: Professor): Promise<void> {
+    async salvar(professor: Professor, id?: number): Promise<void> {
         try {
-            await api.post("professores",professor);
+            id ? 
+                await api.put(`professores/${id}`, professor) : 
+                await api.post("professores",professor);
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
                 const status = error.response?.status;
