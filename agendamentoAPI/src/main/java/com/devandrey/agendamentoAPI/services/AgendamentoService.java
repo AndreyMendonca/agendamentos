@@ -53,6 +53,29 @@ public class AgendamentoService {
         return repository.save(agendamento);
     }
 
+    public Agendamento findById(Long id){
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+    }
+
+    public Agendamento statusRealizada(Long id){
+        Agendamento agendamento = this.findById(id);
+        if(agendamento.getStatusAgendamento().equals(StatusAgendamento.CANCELADA)){
+            throw new ResourceUnprocessableException("O agendamento foi cancelado, não é possivel setar como realizado");
+        }
+        agendamento.setStatusAgendamento(StatusAgendamento.REALIZADA);
+        return repository.save(agendamento);
+    }
+
+    public Agendamento statusCancelado(Long id){
+        Agendamento agendamento = this.findById(id);
+        if(agendamento.getStatusAgendamento().equals(StatusAgendamento.REALIZADA)){
+            throw new ResourceUnprocessableException("O agendamento já foi realizado, não é possível cancelar.");
+        }
+        agendamento.setStatusAgendamento(StatusAgendamento.CANCELADA);
+        return repository.save(agendamento);
+    }
+
+
     private void validarDisponibilidadeProfessor(Professor professor, LocalDateTime dataAgendamento) {
         LocalDate data = dataAgendamento.toLocalDate();
         LocalDateTime inicioDoDia = data.atStartOfDay();

@@ -17,4 +17,14 @@ public class AgendamentoController {
     public Agendamento save(@RequestBody AgendamentoRequestDTO dto){
         return service.save(dto);
     }
+
+    @PatchMapping("/realizado/{id}")
+    public Agendamento statusRealizada(@PathVariable Long id){
+        return service.statusRealizada(id);
+    }
+
+    @PatchMapping("/cancelado/{id}")
+    public Agendamento statusCancelado(@PathVariable Long id){
+        return service.statusCancelado(id);
+    }
 }
