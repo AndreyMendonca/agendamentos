@@ -10,7 +10,7 @@ type Props = {
 export const AgendamentoDialog = ({ open, onOpenChange }: Props) => {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-full !max-w-5xl">
+            <DialogContent className="lg:w-full lg:!max-w-5xl">
                 <DialogHeader>
                     <DialogTitle>Agendamentos</DialogTitle>
                     <DialogDescription>Os campos marcados com * são obrigatórios</DialogDescription>

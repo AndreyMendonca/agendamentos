@@ -5,14 +5,18 @@ import { Professor } from "@/types/Professor";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { cn } from "@/lib/utils";
+import { Estudante } from "@/types/Estudante";
 
 type Props = {
-    professores: Professor[];
+    lista: Professor[] | Estudante[];
+    onChange: (value: number) => void;
+    error?: boolean;
 }
 
-export const AgendamentoSelect = ({ professores }: Props) => {
+export const AgendamentoSelect = ({ lista, onChange, error }: Props) => {
     const [open, setOpen] = useState(false);
-    const [selecionado, setSelecionado] = useState<Professor | null>(null);
+    const [selecionado, setSelecionado] = useState<Professor | Estudante | null>(null);
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -20,12 +24,18 @@ export const AgendamentoSelect = ({ professores }: Props) => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="justify-between"
+                    className={cn(
+                        "justify-between",
+                        error && "border-red-500 focus:ring-red-500"
+                    )}
                 >
                     {selecionado
-                        ? professores.find((professor) => professor.id === selecionado.id)?.nome 
-                        : "Selecione o professor..."}
-                    <ChevronsUpDown className="opacity-50" />
+                        ? `${selecionado.nome} ${selecionado.sobrenome}`
+                        : "Selecione..."}
+                    {
+                        selecionado ? <Check className="opacity-50" /> : <ChevronsUpDown className="opacity-50" />
+                    }
+
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0">
@@ -34,25 +44,24 @@ export const AgendamentoSelect = ({ professores }: Props) => {
                     <CommandList>
                         <CommandEmpty>Nenhum resultado</CommandEmpty>
                         <CommandGroup>
-                            {professores.map((professor) => (
+                            {lista.map((obj) => (
                                 <CommandItem
-                                    key={professor.id}
-                                    value={professor.nome}
-                                    onSelect={(currentValue) => {
-                                        //setValue(currentValue === value ? "" : currentValue)
-                                        //setValue(currentValue as Roles)
-                                        setSelecionado(professor)
+                                    key={obj.id}
+                                    value={obj.nome}
+                                    onSelect={() => {
+                                        setSelecionado(obj)
                                         setOpen(false)
+                                        onChange(obj.id!);
                                     }}
                                 >
                                     <div>
-                                        <p>{professor.nome} {professor.sobrenome}</p>
+                                        <p>{obj.nome} {obj.sobrenome}</p>
                                     </div>
 
                                     <Check
                                         className={cn(
                                             "h-4 w-4",
-                                            selecionado?.id === professor.id
+                                            selecionado?.id === obj.id
                                                 ? "opacity-100"
                                                 : "opacity-0"
                                         )}
