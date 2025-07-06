@@ -3,6 +3,8 @@ package com.devandrey.agendamentoAPI.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +20,8 @@ public class Professor {
     private LocalDate nascimento;
     private String especialidade;
     private Boolean status;
+    @OneToMany(mappedBy = "professor")
+    private List<Agendamento> agendamentos = new ArrayList<>();
 
     public Professor(){}
 
@@ -84,6 +88,14 @@ public class Professor {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public List<Agendamento> getAgendamentos() {
+        return agendamentos;
+    }
+
+    public void setAgendamentos(List<Agendamento> agendamentos) {
+        this.agendamentos = agendamentos;
     }
 
     @Override
