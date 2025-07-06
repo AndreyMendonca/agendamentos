@@ -18,9 +18,11 @@ import { Textarea } from "../ui/textarea";
 import { cn } from "@/lib/utils";
 import { TimePickerDemo } from "../ui/time-picker-demo";
 import { ptBR } from "date-fns/locale";
+import { AgendamentoResquest } from "@/types/Agendamento";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-    dataAgendamento: z.date({required_error: "Campo Obrigatório" }),
+    dataAgendamento: z.date({ required_error: "Campo Obrigatório" }),
     professor: z.number({ required_error: "Campo Obrigatório" }),
     estudante: z.number({ required_error: "Campo Obrigatório" }),
     conteudo: z.string({ required_error: "Campo Obrigatório" }).min(2, "Campo Obrigatório")
@@ -28,9 +30,11 @@ const formSchema = z.object({
 
 type Props = {
     onOpenChange: (open: boolean) => void;
+    save: (dto: AgendamentoResquest) => void;
+    updatePage: () => void;
 }
 
-export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
+export const AgendamentoCadastro = ({ onOpenChange, save, updatePage }: Props) => {
     const professorService = useProfessorService();
     const estudanteService = useEstudanteService();
     const [open, setOpen] = useState(false)
@@ -43,8 +47,17 @@ export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
         defaultValues: {}
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log('submit', values)
+        try {
+            await save(values)
+            onOpenChange(false);
+            updatePage();
+        } catch (error: any) {
+            toast.error("Erro!", {
+                description: error.message
+            })
+        }
     }
 
     const pegarProfessores = async () => {
@@ -107,7 +120,7 @@ export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
                                             </div>
                                         </PopoverContent>
                                     </Popover>
-                                    <FormMessage/>
+                                    <FormMessage />
                                 </FormItem>
 
                             )}
@@ -123,9 +136,9 @@ export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
                                         <FormItem>
                                             <FormLabel>Professor *</FormLabel>
                                             <FormControl>
-                                                <AgendamentoSelect 
-                                                    lista={professores} 
-                                                    onChange={field.onChange} 
+                                                <AgendamentoSelect
+                                                    lista={professores}
+                                                    onChange={field.onChange}
                                                     error={!!form.formState.errors.professor}
                                                 />
                                             </FormControl>
@@ -142,9 +155,9 @@ export const AgendamentoCadastro = ({ onOpenChange }: Props) => {
                                         <FormItem>
                                             <FormLabel>Estudante *</FormLabel>
                                             <FormControl>
-                                                <AgendamentoSelect 
-                                                    lista={estudantes} 
-                                                    onChange={field.onChange} 
+                                                <AgendamentoSelect
+                                                    lista={estudantes}
+                                                    onChange={field.onChange}
                                                     error={!!form.formState.errors.estudante}
                                                 />
                                             </FormControl>

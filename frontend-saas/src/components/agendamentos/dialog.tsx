@@ -1,3 +1,4 @@
+import { AgendamentoResquest } from "@/types/Agendamento";
 import { Button } from "../ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { AgendamentoCadastro } from "./cadastro";
@@ -5,9 +6,11 @@ import { AgendamentoCadastro } from "./cadastro";
 type Props = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    save: (dto: AgendamentoResquest) => void;
+    updatePage: () => void;
 }
 
-export const AgendamentoDialog = ({ open, onOpenChange }: Props) => {
+export const AgendamentoDialog = ({ open, onOpenChange, save, updatePage }: Props) => {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="lg:w-full lg:!max-w-5xl">
@@ -15,7 +18,7 @@ export const AgendamentoDialog = ({ open, onOpenChange }: Props) => {
                     <DialogTitle>Agendamentos</DialogTitle>
                     <DialogDescription>Os campos marcados com * são obrigatórios</DialogDescription>
                 </DialogHeader>
-                <AgendamentoCadastro onOpenChange={onOpenChange} />
+                <AgendamentoCadastro onOpenChange={onOpenChange} save={save} updatePage={updatePage}/>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant="outline" className="cursor-pointer">Cancelar</Button>

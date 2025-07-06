@@ -59,7 +59,7 @@ export const Page = () => {
             } else {
                 await useService.statusCancelado(idAgendamento);
             }
-            toast.success("Sucesso", {
+            toast("Sucesso", {
                 description: `Agendamento marcado como ${textoStatus} com sucesso!`
             })
             buscarTodos();
@@ -102,7 +102,7 @@ export const Page = () => {
                     </Tabs>
                 </CardDescription>
             </Card>
-            <AgendamentoDialog open={openDialog} onOpenChange={setOpenDialog} />
+            <AgendamentoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleAgendamento}/>
             <AgendamentoDialogStatus
                 onOpenChange={setOpenDialogStatus}
                 open={openDialogStatus}
