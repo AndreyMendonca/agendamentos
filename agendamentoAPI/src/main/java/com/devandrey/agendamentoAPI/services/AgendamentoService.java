@@ -49,7 +49,7 @@ public class AgendamentoService {
         agendamento.setEstudante(estudante);
         agendamento.setDataAgendamento(dto.getDataAgendamento());
         agendamento.setConteudo(dto.getConteudo());
-        agendamento.setStatusAgendamento(StatusAgendamento.NAO_REALIZADA);
+        agendamento.setStatusAgendamento(StatusAgendamento.NAO_REALIZADO);
         return repository.save(agendamento);
     }
 
@@ -59,22 +59,25 @@ public class AgendamentoService {
 
     public Agendamento statusRealizada(Long id){
         Agendamento agendamento = this.findById(id);
-        if(agendamento.getStatusAgendamento().equals(StatusAgendamento.CANCELADA)){
+        if(agendamento.getStatusAgendamento().equals(StatusAgendamento.CANCELADO)){
             throw new ResourceUnprocessableException("O agendamento foi cancelado, não é possivel setar como realizado");
         }
-        agendamento.setStatusAgendamento(StatusAgendamento.REALIZADA);
+        agendamento.setStatusAgendamento(StatusAgendamento.REALIZADO);
         return repository.save(agendamento);
     }
 
     public Agendamento statusCancelado(Long id){
         Agendamento agendamento = this.findById(id);
-        if(agendamento.getStatusAgendamento().equals(StatusAgendamento.REALIZADA)){
+        if(agendamento.getStatusAgendamento().equals(StatusAgendamento.REALIZADO)){
             throw new ResourceUnprocessableException("O agendamento já foi realizado, não é possível cancelar.");
         }
-        agendamento.setStatusAgendamento(StatusAgendamento.CANCELADA);
+        agendamento.setStatusAgendamento(StatusAgendamento.CANCELADO);
         return repository.save(agendamento);
     }
 
+    public List<Agendamento> findAll() {
+        return repository.findAll();
+    }
 
     private void validarDisponibilidadeProfessor(Professor professor, LocalDateTime dataAgendamento) {
         LocalDate data = dataAgendamento.toLocalDate();
@@ -119,4 +122,6 @@ public class AgendamentoService {
             throw new ResourceUnprocessableException("A aula só pode ser agendada ou atualizada com no mínimo 24 horas de antecedência.");
         }
     }
+
+
 }

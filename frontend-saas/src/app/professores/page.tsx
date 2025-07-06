@@ -73,7 +73,7 @@ export const Page = () => {
 
     return (
         <Template>
-            <Card className="mx-5">
+            <Card className="mx-5 mb-5">
                 <CardHeader>
                     <CardTitle>Professores</CardTitle>
                     <CardDescription>Gerencimento de professores</CardDescription>

@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/agendamentos")
 @CrossOrigin(origins = "*")
@@ -27,5 +29,10 @@ public class AgendamentoController {
     @PatchMapping("/cancelado/{id}")
     public Agendamento statusCancelado(@PathVariable Long id){
         return service.statusCancelado(id);
+    }
+
+    @GetMapping
+    public List<Agendamento> findAll(){
+        return service.findAll();
     }
 }
