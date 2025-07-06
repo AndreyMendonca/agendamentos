@@ -13,6 +13,7 @@ public class ProfessorDTO {
     @NotEmpty(message = "é obrigátorio")
     private String sobrenome;
     @CPF(message = "não é válido")
+    @NotEmpty(message = "é obrigátorio")
     private String cpf;
     private LocalDate nascimento;
     private String especialidade;

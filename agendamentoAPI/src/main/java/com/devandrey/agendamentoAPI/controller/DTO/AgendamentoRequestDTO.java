@@ -1,30 +1,27 @@
 package com.devandrey.agendamentoAPI.controller.DTO;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 public class AgendamentoRequestDTO {
-    private Long id;
+    @NotNull(message = "é obrigátorio")
     private Long professor;
+    @NotNull(message = "é obrigátorio")
     private Long estudante;
+    @NotNull(message = "é obrigátorio")
     private LocalDateTime dataAgendamento;
+    @NotEmpty(message = "é obrigátorio")
     private String conteudo;
 
     public AgendamentoRequestDTO(){}
 
-    public AgendamentoRequestDTO(Long id, Long professor, Long estudante, LocalDateTime dataAgendamento, String conteudo) {
-        this.id = id;
+    public AgendamentoRequestDTO(Long professor, Long estudante, LocalDateTime dataAgendamento, String conteudo) {
         this.professor = professor;
         this.estudante = estudante;
         this.dataAgendamento = dataAgendamento;
         this.conteudo = conteudo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getProfessor() {
