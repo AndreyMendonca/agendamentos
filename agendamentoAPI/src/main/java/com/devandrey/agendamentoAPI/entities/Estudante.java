@@ -1,5 +1,6 @@
 package com.devandrey.agendamentoAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -160,6 +161,7 @@ public class Estudante {
         this.cpf = cpf;
     }
 
+    @JsonIgnore
     public List<Agendamento> getAgendamentos() {
         return agendamentos;
     }

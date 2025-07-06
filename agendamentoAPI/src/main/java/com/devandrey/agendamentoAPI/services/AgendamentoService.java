@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,20 +30,20 @@ public class AgendamentoService {
     @Autowired
     private EstudanteRepository estudanteRepository;
 
-    public Agendamento save(AgendamentoRequestDTO dto){
+    public Agendamento save(AgendamentoRequestDTO dto) {
         Agendamento agendamento = new Agendamento();
-
         validarHorarioDeAntecendencia(dto.getDataAgendamento());
 
-        Professor professor = professorRepository.findById(dto.getProfessor()).orElseThrow(()-> new ResourceNotFoundException("Professor não encontrado"));
-        if(!professor.getStatus()){
+        Professor professor = professorRepository.findById(dto.getProfessor()).orElseThrow(() -> new ResourceNotFoundException("Professor não encontrado"));
+        if (!professor.getStatus()) {
             throw new ResourceUnprocessableException(
                     "O professor está inativo, ative para agendar"
             );
         }
+        validarDisponibilidadeProfessor(professor, dto.getDataAgendamento());
 
-        Estudante estudante = estudanteRepository.findById(dto.getEstudante()).orElseThrow(()-> new ResourceNotFoundException("Estudante não encontrado"));
-        //validar disponibilidade do professor // aluno
+        Estudante estudante = estudanteRepository.findById(dto.getEstudante()).orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
+        validarDisponibilidadeEstudante(estudante, dto.getDataAgendamento());
 
         agendamento.setProfessor(professor);
         agendamento.setEstudante(estudante);
@@ -54,18 +53,46 @@ public class AgendamentoService {
         return repository.save(agendamento);
     }
 
-    private void validarDisponibilidadeProfessor(Professor professor, LocalDateTime dataAgendamento){
+    private void validarDisponibilidadeProfessor(Professor professor, LocalDateTime dataAgendamento) {
         LocalDate data = dataAgendamento.toLocalDate();
         LocalDateTime inicioDoDia = data.atStartOfDay();
         LocalDateTime fimDoDia = data.atTime(LocalTime.MAX);
         List<Agendamento> agendamentos = repository.findByProfessorAndDataAgendamentoBetween(professor, inicioDoDia, fimDoDia);
-        //fazer validação de dispobilidade
+
+        for (Agendamento agendamento : agendamentos) {
+            LocalDateTime agendamentoInicio = agendamento.getDataAgendamento();
+            LocalDateTime rangeInicialAgendamento = agendamentoInicio.minusHours(1);
+            LocalDateTime rangeFinalAgendamento = agendamentoInicio.plusHours(1);
+
+            boolean confito = dataAgendamento.isAfter(rangeInicialAgendamento) && dataAgendamento.isBefore(rangeFinalAgendamento);
+            if (confito) {
+                throw new ResourceUnprocessableException("O professor estará em aula no horário selecionado");
+            }
+        }
     }
 
-    private void validarHorarioDeAntecendencia(LocalDateTime horarioAgendamento){
+    private void validarDisponibilidadeEstudante(Estudante estudante, LocalDateTime dataAgendamento) {
+        LocalDate data = dataAgendamento.toLocalDate();
+        LocalDateTime inicioDoDia = data.atStartOfDay();
+        LocalDateTime fimDoDia = data.atTime(LocalTime.MAX);
+        List<Agendamento> agendamentos = repository.findByEstudanteAndDataAgendamentoBetween(estudante, inicioDoDia, fimDoDia);
+
+        for (Agendamento agendamento : agendamentos) {
+            LocalDateTime agendamentoInicio = agendamento.getDataAgendamento();
+            LocalDateTime rangeInicialAgendamento = agendamentoInicio.minusHours(1);
+            LocalDateTime rangeFinalAgendamento = agendamentoInicio.plusHours(1);
+
+            boolean confito = dataAgendamento.isAfter(rangeInicialAgendamento) && dataAgendamento.isBefore(rangeFinalAgendamento);
+            if (confito) {
+                throw new ResourceUnprocessableException("O estudante estará em aula no horário selecionado");
+            }
+        }
+    }
+
+    private void validarHorarioDeAntecendencia(LocalDateTime horarioAgendamento) {
         LocalDateTime dataMinimaAgendamento = LocalDateTime.now().plusDays(1);
 
-        if (dataMinimaAgendamento.isAfter(horarioAgendamento)){
+        if (dataMinimaAgendamento.isAfter(horarioAgendamento)) {
             throw new ResourceUnprocessableException("A aula só pode ser agendada ou atualizada com no mínimo 24 horas de antecedência.");
         }
     }
