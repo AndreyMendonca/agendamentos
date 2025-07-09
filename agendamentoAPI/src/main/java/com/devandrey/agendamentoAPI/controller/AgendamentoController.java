@@ -5,8 +5,10 @@ import com.devandrey.agendamentoAPI.entities.Agendamento;
 import com.devandrey.agendamentoAPI.services.AgendamentoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -31,8 +33,12 @@ public class AgendamentoController {
         return service.statusCancelado(id);
     }
 
-    @GetMapping
+    @GetMapping("/todos")
     public List<Agendamento> findAll(){
         return service.findAll();
+    }
+    @GetMapping()
+    public List<Agendamento> findAllByDate(@RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data){
+        return service.findAllByDate(data);
     }
 }

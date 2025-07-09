@@ -14,6 +14,7 @@ import com.devandrey.agendamentoAPI.repositories.AgendamentoRepository;
 import com.devandrey.agendamentoAPI.repositories.EstudanteRepository;
 import com.devandrey.agendamentoAPI.repositories.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -77,6 +78,12 @@ public class AgendamentoService {
 
     public List<Agendamento> findAll() {
         return repository.findAll();
+    }
+
+    public List<Agendamento> findAllByDate(LocalDate data) {
+        LocalDateTime inicio = data.atStartOfDay();
+        LocalDateTime fim = data.atTime(LocalTime.MAX);
+        return repository.findByDataAgendamentoBetween(inicio, fim);
     }
 
     private void validarDisponibilidadeProfessor(Professor professor, LocalDateTime dataAgendamento) {
