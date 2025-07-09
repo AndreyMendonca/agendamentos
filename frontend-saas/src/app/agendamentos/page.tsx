@@ -22,9 +22,12 @@ export const Page = () => {
     const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
     const useService = useAgendamentoService();
 
-    const buscarTodos = async () => {
+    const buscarTodos = async (dia?: Date) => {
+        if(!dia){
+            dia = new Date();
+        }
         try {
-            const lista = await useService.buscarTodos();
+            const lista = await useService.buscarTodosPorData(dia);
             setAgendamentos(lista);
         } catch (error: any) {
             toast.error("Erro!", {
@@ -94,7 +97,7 @@ export const Page = () => {
                             <TabsTrigger value="calendar">Calendário</TabsTrigger>
                         </TabsList>
                         <TabsContent value="table">
-                            <DataTable columns={columnsAgendamento} data={agendamentos} />
+                            <DataTable columns={columnsAgendamento} data={agendamentos} filtro={buscarTodos}/>
                         </TabsContent>
                         <TabsContent value="calendar">
                             <p>calendario</p>

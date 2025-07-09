@@ -21,15 +21,18 @@ import {
 } from "@/components/ui/table"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
+import { AgendamentoFormData } from "./form-data"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    filtro: (dia: Date) => void
 }
 
 export function DataTable<TData, TValue>({
     columns,
-    data
+    data,
+    filtro
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -51,7 +54,7 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="flex flex-col gap-3">
-            <div className="flex items-center">
+            <div className="flex flex-col  md:flex-row md:justify-between gap-2">
                 <Input
                     placeholder="Procurar por estudante"
                     value={(table.getColumn("estudante")?.getFilterValue() as string) ?? ""}
@@ -60,6 +63,7 @@ export function DataTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
+                <AgendamentoFormData filtro={filtro}/>
             </div>
             <div className="rounded-md border">
             <Table>
