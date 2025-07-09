@@ -4,6 +4,7 @@ import { CardOption } from "@/components/card-option";
 import { Template } from "@/components/template/template";
 
 export default function Home() {
+    
     return (
         <Template>
             <div className="flex flex-col items-center mx-10 mb-10 gap-5 md:flex-row justify-between">

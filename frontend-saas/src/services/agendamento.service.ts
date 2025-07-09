@@ -20,7 +20,17 @@ class AgendamentoService {
     }
 
     async buscarTodos(): Promise<Agendamento[]> {
-        const response = await api.get("agendamentos");
+        const response = await api.get("agendamentos/todos");
+        return response.data;
+    }
+
+    async buscarTodosPorData(data: Date): Promise<Agendamento[]> {
+        const dataFormatada = data.toISOString().split('T')[0]
+        const response = await api.get("agendamentos",{
+            params:{
+                data: dataFormatada,
+            }
+        });
         return response.data;
     }
 
