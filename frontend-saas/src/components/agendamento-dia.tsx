@@ -49,7 +49,7 @@ export const AgendamentoDia = () => {
                         {
                             agendamentosDia.map((agendamento) => (
                                 <TableRow key={agendamento.id} className="m-2">
-                                    <TableCell>{new Date(agendamento.dataAgendamento).toLocaleDateString()}</TableCell>
+                                    <TableCell>{new Date(agendamento.dataAgendamento).toLocaleTimeString([],{hour: '2-digit',minute:'2-digit'})}</TableCell>
                                     <TableCell>{agendamento.professor.nome}</TableCell>
                                     <TableCell>{agendamento.estudante.nome}</TableCell>
                                     <TableCell>{agendamento.estudante.whatsapp}</TableCell>
