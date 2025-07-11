@@ -27,12 +27,14 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     filtro: (dia: Date) => void
+    setDataFiltro: (data:Date) => void
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
-    filtro
+    filtro,
+    setDataFiltro,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -63,7 +65,7 @@ export function DataTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
-                <AgendamentoFormData filtro={filtro}/>
+                <AgendamentoFormData filtro={filtro} setDataFiltro={setDataFiltro}/>
             </div>
             <div className="rounded-md border">
             <Table>

@@ -32,13 +32,12 @@ type Props = {
     onOpenChange: (open: boolean) => void;
     save: (dto: AgendamentoResquest) => void;
     updatePage: () => void;
+    dataFiltro: Date;
 }
 
-export const AgendamentoCadastro = ({ onOpenChange, save, updatePage }: Props) => {
+export const AgendamentoCadastro = ({ onOpenChange, save, updatePage, dataFiltro }: Props) => {
     const professorService = useProfessorService();
     const estudanteService = useEstudanteService();
-    const [open, setOpen] = useState(false)
-    const [date, setDate] = useState<Date | undefined>(undefined)
     const [professores, setProfessores] = useState<Professor[]>([]);
     const [estudantes, setEstudantes] = useState<Estudante[]>([]);
 
@@ -52,7 +51,7 @@ export const AgendamentoCadastro = ({ onOpenChange, save, updatePage }: Props) =
         try {
             await save(values)
             onOpenChange(false);
-            updatePage();
+            updatePage(dataFiltro);
         } catch (error: any) {
             toast.error("Erro!", {
                 description: error.message

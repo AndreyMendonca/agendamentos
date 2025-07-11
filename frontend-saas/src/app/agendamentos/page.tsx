@@ -21,6 +21,7 @@ export const Page = () => {
     const [idAgendamento, setIdAgendamento] = useState<number>(0);
     const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
     const useService = useAgendamentoService();
+    const [dataFiltro, setDataFiltro] = useState<Date>(new Date());
 
     const buscarTodos = async (dia?: Date) => {
         if(!dia){
@@ -65,7 +66,7 @@ export const Page = () => {
             toast("Sucesso", {
                 description: `Agendamento marcado como ${textoStatus} com sucesso!`
             })
-            buscarTodos();
+            buscarTodos(dataFiltro);
         } catch (error: any) {
             toast.error("Erro!", {
                 description: error.message
@@ -97,7 +98,7 @@ export const Page = () => {
                             <TabsTrigger value="calendar">Calendário</TabsTrigger>
                         </TabsList>
                         <TabsContent value="table">
-                            <DataTable columns={columnsAgendamento} data={agendamentos} filtro={buscarTodos}/>
+                            <DataTable columns={columnsAgendamento} data={agendamentos} filtro={buscarTodos} setDataFiltro={setDataFiltro}/>
                         </TabsContent>
                         <TabsContent value="calendar">
                             <p>calendario</p>
@@ -105,7 +106,7 @@ export const Page = () => {
                     </Tabs>
                 </CardDescription>
             </Card>
-            <AgendamentoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleAgendamento}/>
+            <AgendamentoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleAgendamento} dataFiltro={dataFiltro}/>
             <AgendamentoDialogStatus
                 onOpenChange={setOpenDialogStatus}
                 open={openDialogStatus}

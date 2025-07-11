@@ -4,7 +4,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { format } from "date-fns"
+import { format, set } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -18,9 +18,10 @@ const FormSchema = z.object({
 
 type Props = {
     filtro: (dia: Date) => void;
+    setDataFiltro: (data:Date) => void
 }
 
-export const AgendamentoFormData = ({filtro}:Props) => {
+export const AgendamentoFormData = ({filtro, setDataFiltro}:Props) => {
     const [modalCalendario, setModalCalendario] = useState(false)
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -64,6 +65,7 @@ export const AgendamentoFormData = ({filtro}:Props) => {
                                             field.onChange(date);
                                             setModalCalendario(false);
                                             filtro(date!);
+                                            setDataFiltro(date!);
                                         }}
                                         disabled={(date) =>
                                             date < new Date("1900-01-01")
