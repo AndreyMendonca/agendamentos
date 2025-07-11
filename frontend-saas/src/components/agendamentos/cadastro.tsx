@@ -31,7 +31,7 @@ const formSchema = z.object({
 type Props = {
     onOpenChange: (open: boolean) => void;
     save: (dto: AgendamentoResquest) => void;
-    updatePage: () => void;
+    updatePage: (data?:Date) => void;
     dataFiltro: Date;
 }
 
