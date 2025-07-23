@@ -13,6 +13,7 @@ public class Agendamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dataAgendamento;
+    private LocalDateTime dataRealizado;
     private String conteudo;
 
     @ManyToOne()
@@ -49,6 +50,14 @@ public class Agendamento {
 
     public void setDataAgendamento(LocalDateTime dataAgendamento) {
         this.dataAgendamento = dataAgendamento;
+    }
+
+    public LocalDateTime getDataRealizado() {
+        return dataRealizado;
+    }
+
+    public void setDataRealizado(LocalDateTime dataRealizado) {
+        this.dataRealizado = dataRealizado;
     }
 
     public String getConteudo() {

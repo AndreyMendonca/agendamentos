@@ -63,6 +63,7 @@ public class AgendamentoService {
         if(agendamento.getStatusAgendamento().equals(StatusAgendamento.CANCELADO)){
             throw new ResourceUnprocessableException("O agendamento foi cancelado, não é possivel setar como realizado");
         }
+        agendamento.setDataRealizado(LocalDateTime.now());
         agendamento.setStatusAgendamento(StatusAgendamento.REALIZADO);
         return repository.save(agendamento);
     }

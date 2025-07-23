@@ -24,7 +24,7 @@ export const Page = () => {
     const [dataFiltro, setDataFiltro] = useState<Date>(new Date());
 
     const buscarTodos = async (dia?: Date) => {
-        if(!dia){
+        if (!dia) {
             dia = new Date();
         }
         try {
@@ -92,26 +92,15 @@ export const Page = () => {
                     </CardAction>
                 </CardHeader>
                 <CardDescription className="px-10">
-                    <Tabs defaultValue="table">
-                        <TabsList>
-                            <TabsTrigger value="table">Tabela</TabsTrigger>
-                            <TabsTrigger value="calendar">Calendário</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="table">
-                            <DataTable columns={columnsAgendamento} data={agendamentos} filtro={buscarTodos} setDataFiltro={setDataFiltro}/>
-                        </TabsContent>
-                        <TabsContent value="calendar">
-                            <p>calendario</p>
-                        </TabsContent>
-                    </Tabs>
+                    <DataTable columns={columnsAgendamento} data={agendamentos} filtro={buscarTodos} setDataFiltro={setDataFiltro} />
                 </CardDescription>
             </Card>
-            <AgendamentoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleAgendamento} dataFiltro={dataFiltro}/>
+            <AgendamentoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleAgendamento} dataFiltro={dataFiltro} />
             <AgendamentoDialogStatus
                 onOpenChange={setOpenDialogStatus}
                 open={openDialogStatus}
                 texto={textoStatus}
-                onConfirm= {handleStatus}
+                onConfirm={handleStatus}
             />
         </Template>
     )
