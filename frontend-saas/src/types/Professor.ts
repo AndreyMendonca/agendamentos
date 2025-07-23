@@ -3,6 +3,7 @@ export type Professor = {
     nome: string,
     sobrenome: string, 
     especialidade?: string,
+    nascimento?: Date | null;
     cpf: string;
     status: boolean;
 }

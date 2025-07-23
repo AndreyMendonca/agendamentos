@@ -12,7 +12,7 @@ export default function Home() {
                 <CardOption name="Professor" description="Área para controle completo dos professores. Permite cadastrar, atualizar e excluir informações." route="professores"/>
                 <CardOption name="Agendamentos" description="Visualize e administre todos os agendamentos realizados. Inclui funcionalidades de criação, edição e cancelamento." route="agendamentos"/>
             </div>
-            <div className="flex flex-col items-center mx-10 mb-10 gap-5 md:flex-row justify-between">
+            <div className="flex flex-col items-center mx-10 mb-10 gap-5 lg:flex-row justify-between">
                 <AgendamentoDia/>
                 <AulasRealizadas/>
             </div>

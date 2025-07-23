@@ -41,6 +41,7 @@ export const ProfessorCadastro = ({ onOpenChange, updatePage, professor, save, u
             cpf: professor?.cpf ?? "",
             especialidade: professor?.especialidade ?? "",
             status: professor?.status ?? true,
+            nascimento: professor?.nascimento ? new Date(professor.nascimento) : undefined,
         },
     })
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
