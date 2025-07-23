@@ -64,6 +64,15 @@ class AgendamentoService {
             throw new Error("Erro inesperado ao marcar agendamento como cancelado");
         }
     }
+
+    async buscarUltimasRealizadas(): Promise<Agendamento[]>{
+        try{
+            const response = await api.get("agendamentos/ultimos");
+            return response.data;
+        }catch (error: any) {
+            throw new Error("Erro inesperado ao buscar últimos registros");
+        }
+    }
 }
 
 export const useAgendamentoService = () => new AgendamentoService();

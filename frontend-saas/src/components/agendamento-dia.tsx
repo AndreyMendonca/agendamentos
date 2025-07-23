@@ -29,11 +29,11 @@ export const AgendamentoDia = () => {
     }, [])
 
     return (
-        <Card className="flex-1">
+        <Card className="flex-1 max-h-96 min-h-96">
             <CardHeader>
                 <CardTitle>Agendamentos do dia</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className=" overflow-y-auto h-full" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} >
                 <Table>
                     <TableCaption>{hoje.toLocaleDateString()}</TableCaption>
                     <TableHeader>
