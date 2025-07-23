@@ -87,6 +87,10 @@ public class AgendamentoService {
         return repository.findByDataAgendamentoBetween(inicio, fim);
     }
 
+    public List<Agendamento> findUltimosRealizados() {
+        return repository.findTop10ByStatusAgendamentoOrderByDataRealizadoDesc(StatusAgendamento.REALIZADO);
+    }
+
     private void validarDisponibilidadeProfessor(Professor professor, LocalDateTime dataAgendamento) {
         LocalDate data = dataAgendamento.toLocalDate();
         LocalDateTime inicioDoDia = data.atStartOfDay();

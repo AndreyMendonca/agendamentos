@@ -41,4 +41,9 @@ public class AgendamentoController {
     public List<Agendamento> findAllByDate(@RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data){
         return service.findAllByDate(data);
     }
+    @GetMapping("/ultimos")
+    public List<Agendamento> findUltimosRealizados(){
+        return service.findUltimosRealizados();
+    }
+
 }
