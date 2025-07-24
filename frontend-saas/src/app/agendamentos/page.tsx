@@ -20,6 +20,7 @@ export const Page = () => {
     const [textoStatus, setTextoStatus] = useState<"REALIZADO" | "CANCELADO">("REALIZADO");
     const [idAgendamento, setIdAgendamento] = useState<number>(0);
     const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
+    const [agendamento, setAgendamento] = useState<Agendamento | null>(null)
     const useService = useAgendamentoService();
     const [dataFiltro, setDataFiltro] = useState<Date>(new Date());
 
@@ -47,12 +48,18 @@ export const Page = () => {
         setTextoStatus("CANCELADO");
         setIdAgendamento(id);
     }
-    const columnsAgendamento = columns(handleRealizadoClick, handleCanceladoClick);
+    const handleVisualizacao = (agendamento: Agendamento) =>{
+        setAgendamento(agendamento);
+        setOpenDialog(true);
+    }
+    const columnsAgendamento = columns(handleRealizadoClick, handleCanceladoClick, handleVisualizacao);
 
-    const handleAgendamento = async (dto: AgendamentoResquest) => {
-        await useService.salvar(dto);
+    const handleAgendamento = async (dto: AgendamentoResquest, id?: number) => {
+        id ?
+            await useService.salvar(dto, id) :
+            await useService.salvar(dto);
         toast.success("Sucesso", {
-            description: "Agendamento realizado com sucesso!"
+            description: "Agendamento salvo com sucesso!"
         })
     }
 
@@ -85,7 +92,7 @@ export const Page = () => {
                     <CardTitle>Agendamentos</CardTitle>
                     <CardDescription>Gerencimento de Agendamentos</CardDescription>
                     <CardAction>
-                        <Button onClick={() => setOpenDialog(true)} className="cursor-pointer">
+                        <Button onClick={() => {setOpenDialog(true); setAgendamento(null)}} className="cursor-pointer">
                             Agendar
                             <CalendarClock />
                         </Button>
@@ -95,7 +102,7 @@ export const Page = () => {
                     <DataTable columns={columnsAgendamento} data={agendamentos} filtro={buscarTodos} setDataFiltro={setDataFiltro} />
                 </CardDescription>
             </Card>
-            <AgendamentoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleAgendamento} dataFiltro={dataFiltro} />
+            <AgendamentoDialog open={openDialog} onOpenChange={setOpenDialog} updatePage={buscarTodos} save={handleAgendamento} dataFiltro={dataFiltro} agendamento={agendamento} />
             <AgendamentoDialogStatus
                 onOpenChange={setOpenDialogStatus}
                 open={openDialogStatus}

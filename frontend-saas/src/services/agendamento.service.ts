@@ -4,9 +4,11 @@ import axios from "axios";
 import { Agendamento, AgendamentoResquest } from "@/types/Agendamento";
 
 class AgendamentoService {
-    async salvar(dto: AgendamentoResquest): Promise<void> {
+    async salvar(dto: AgendamentoResquest, id?: number): Promise<void> {
         try {
-            await api.post('agendamentos', dto);
+            id ?
+                await api.put(`agendamentos/${id}`, dto) :
+                await api.post('agendamentos', dto);
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
                 const status = error.response?.status;

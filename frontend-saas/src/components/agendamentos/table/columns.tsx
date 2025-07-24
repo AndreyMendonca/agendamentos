@@ -7,7 +7,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, CircleX, Eye, PencilIcon, SquareCheckBig, SquareX, Trash2 } from "lucide-react"
 import Link from "next/link"
 
-export const columns = (onRealizadoClick: (id: number) => void, onCanceladoClick: (id: number) => void): ColumnDef<Agendamento>[] => [
+export const columns = (onRealizadoClick: (id: number) => void, onCanceladoClick: (id: number) => void, onVisualizarClick:(agendamento: Agendamento) => void) : ColumnDef<Agendamento>[] => [
     {
         accessorKey: "conteudo",
         header: "Conteúdo",
@@ -111,7 +111,7 @@ export const columns = (onRealizadoClick: (id: number) => void, onCanceladoClick
                 <div className="flex gap-5">
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant="outline" size="icon" className="rounded-full cursor-pointer">
+                            <Button onClick={() => onVisualizarClick(agendamento)} variant="outline" size="icon" className="rounded-full cursor-pointer">
                                 <Eye />
                             </Button>
                         </TooltipTrigger>

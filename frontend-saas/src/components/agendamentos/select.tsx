@@ -11,12 +11,12 @@ type Props = {
     lista: Professor[] | Estudante[];
     onChange: (value: number) => void;
     error?: boolean;
+    opcSelecionada: Professor | Estudante | undefined;
 }
 
-export const AgendamentoSelect = ({ lista, onChange, error }: Props) => {
+export const AgendamentoSelect = ({ lista, onChange, error, opcSelecionada }: Props) => {
     const [open, setOpen] = useState(false);
-    const [selecionado, setSelecionado] = useState<Professor | Estudante | null>(null);
-
+    const [selecionado, setSelecionado] = useState<Professor | Estudante | null>(opcSelecionada ?? null);
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>

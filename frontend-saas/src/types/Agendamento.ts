@@ -13,5 +13,6 @@ export type Agendamento = {
     estudante:Estudante;
     professor: Professor;
     dataAgendamento: Date;
+    conteudo?: string;
     statusAgendamento: "NAO_REALIZADO" | "REALIZADO" | "CANCELADO";
 }

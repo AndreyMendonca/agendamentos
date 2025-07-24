@@ -1,7 +1,7 @@
 'use client'
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
-import { z } from "zod"
+import { number, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -18,24 +18,25 @@ import { Textarea } from "../ui/textarea";
 import { cn } from "@/lib/utils";
 import { TimePickerDemo } from "../ui/time-picker-demo";
 import { ptBR } from "date-fns/locale";
-import { AgendamentoResquest } from "@/types/Agendamento";
+import { Agendamento, AgendamentoResquest } from "@/types/Agendamento";
 import { toast } from "sonner";
 
 const formSchema = z.object({
     dataAgendamento: z.date({ required_error: "Campo Obrigatório" }),
-    professor: z.number({ required_error: "Campo Obrigatório" }),
-    estudante: z.number({ required_error: "Campo Obrigatório" }),
+    professor: z.number({ required_error: "Campo Obrigatório"}).positive("Campo Obrigatório"),
+    estudante: z.number({ required_error: "Campo Obrigatório"}).positive("Campo Obrigatório"),
     conteudo: z.string({ required_error: "Campo Obrigatório" }).min(2, "Campo Obrigatório")
 })
 
 type Props = {
     onOpenChange: (open: boolean) => void;
-    save: (dto: AgendamentoResquest) => void;
+    save: (dto: AgendamentoResquest, id?: number) => void;
     updatePage: (data?:Date) => void;
     dataFiltro: Date;
+    agendamento?: Agendamento | null;
 }
 
-export const AgendamentoCadastro = ({ onOpenChange, save, updatePage, dataFiltro }: Props) => {
+export const AgendamentoCadastro = ({ onOpenChange, save, updatePage, dataFiltro, agendamento }: Props) => {
     const professorService = useProfessorService();
     const estudanteService = useEstudanteService();
     const [professores, setProfessores] = useState<Professor[]>([]);
@@ -43,13 +44,19 @@ export const AgendamentoCadastro = ({ onOpenChange, save, updatePage, dataFiltro
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {}
+        defaultValues: {
+            dataAgendamento: agendamento?.dataAgendamento ? new Date(agendamento?.dataAgendamento) : undefined,
+            conteudo: agendamento?.conteudo ?? "",
+            professor: agendamento?.professor.id ?? 0,
+            estudante: agendamento?.estudante.id ?? 0,
+        }
     })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log('submit', values)
         try {
-            await save(values)
+            agendamento?.id ?
+                await save(values, agendamento.id) : 
+                await save(values)
             onOpenChange(false);
             updatePage(dataFiltro);
         } catch (error: any) {
@@ -139,6 +146,7 @@ export const AgendamentoCadastro = ({ onOpenChange, save, updatePage, dataFiltro
                                                     lista={professores}
                                                     onChange={field.onChange}
                                                     error={!!form.formState.errors.professor}
+                                                    opcSelecionada={agendamento?.professor}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -158,6 +166,7 @@ export const AgendamentoCadastro = ({ onOpenChange, save, updatePage, dataFiltro
                                                     lista={estudantes}
                                                     onChange={field.onChange}
                                                     error={!!form.formState.errors.estudante}
+                                                    opcSelecionada={agendamento?.estudante}
                                                 />
                                             </FormControl>
                                             <FormMessage />
