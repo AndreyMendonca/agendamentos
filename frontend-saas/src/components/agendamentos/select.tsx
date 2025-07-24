@@ -47,7 +47,7 @@ export const AgendamentoSelect = ({ lista, onChange, error, opcSelecionada }: Pr
                             {lista.map((obj) => (
                                 <CommandItem
                                     key={obj.id}
-                                    value={obj.nome}
+                                    value={`${obj.nome} ${obj.sobrenome} `}
                                     onSelect={() => {
                                         setSelecionado(obj)
                                         setOpen(false)
