@@ -46,4 +46,9 @@ public class AgendamentoController {
         return service.findUltimosRealizados();
     }
 
+    @PutMapping("/{id}")
+    public Agendamento update(@RequestBody @Valid AgendamentoRequestDTO dto, @PathVariable Long id){
+        return service.update(dto, id);
+    }
+
 }

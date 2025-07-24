@@ -91,6 +91,29 @@ public class AgendamentoService {
         return repository.findTop10ByStatusAgendamentoOrderByDataRealizadoDesc(StatusAgendamento.REALIZADO);
     }
 
+    public Agendamento update(AgendamentoRequestDTO dto, Long id){
+        Agendamento agendamento = this.findById(id);
+        validarHorarioDeAntecendencia(dto.getDataAgendamento());
+
+        Professor professor = professorRepository.findById(dto.getProfessor()).orElseThrow(() -> new ResourceNotFoundException("Professor não encontrado"));
+        if (!professor.getStatus()) {
+            throw new ResourceUnprocessableException(
+                    "O professor está inativo, ative para agendar"
+            );
+        }
+        validarDisponibilidadeProfessor(professor, dto.getDataAgendamento());
+
+        Estudante estudante = estudanteRepository.findById(dto.getEstudante()).orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
+        validarDisponibilidadeEstudante(estudante, dto.getDataAgendamento());
+
+        agendamento.setProfessor(professor);
+        agendamento.setEstudante(estudante);
+        agendamento.setDataAgendamento(dto.getDataAgendamento());
+        agendamento.setConteudo(dto.getConteudo());
+
+        return repository.save(agendamento);
+    }
+
     private void validarDisponibilidadeProfessor(Professor professor, LocalDateTime dataAgendamento) {
         LocalDate data = dataAgendamento.toLocalDate();
         LocalDateTime inicioDoDia = data.atStartOfDay();
