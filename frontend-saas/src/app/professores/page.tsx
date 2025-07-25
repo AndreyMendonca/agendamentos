@@ -11,6 +11,7 @@ import { DataTable } from "@/components/professores/table/data-table";
 import { toast } from "sonner";
 import { UserRoundPlus } from "lucide-react";
 import { DialogDelete } from "@/components/dialog-delete";
+import { describe } from "node:test";
 
 export const Page = () => {
     const useService = useProfessorService();
@@ -22,8 +23,9 @@ export const Page = () => {
 
 
     const buscarTodos = async () => {
-        const lista = await useService.buscarTodos();
-        setProfessores(lista);
+        await useService.buscarTodos()
+            .then(setProfessores)
+            .catch(() => toast.error("Error",{description:"API está com problemas"}));
     }
 
     const handleDelete = async () => {

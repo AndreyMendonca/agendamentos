@@ -22,8 +22,10 @@ export const Page = () => {
     const [estudante, setEstudante] = useState<Estudante | null>(null);
 
     const buscarTodos = async () => {
-        const lista = await useService.buscarTodos();
-        setEstudantes(lista);
+       await useService.buscarTodos()
+        .then(setEstudantes)
+        .catch(() => toast.error("Erro",{description: "API está com problemas"}))
+        
     }
 
     const handleDelete = async () => {
