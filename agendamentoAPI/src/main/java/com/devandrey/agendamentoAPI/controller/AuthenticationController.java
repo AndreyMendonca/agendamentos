@@ -1,11 +1,14 @@
 package com.devandrey.agendamentoAPI.controller;
 
+import com.devandrey.agendamentoAPI.config.security.AccessToken;
+import com.devandrey.agendamentoAPI.config.security.JwtService;
 import com.devandrey.agendamentoAPI.controller.DTO.AuthenticationDTO;
 import com.devandrey.agendamentoAPI.controller.DTO.RegisterDTO;
 import com.devandrey.agendamentoAPI.entities.Usuario;
 import com.devandrey.agendamentoAPI.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +25,9 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private JwtService jwtService;
+
+    @Autowired
     private UsuarioRepository repository;
 
     @PostMapping("/login")
@@ -29,7 +35,9 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.getEmail(), data.getSenha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        AccessToken accessToken = jwtService.generateToken((Usuario) auth.getPrincipal());
+
+        return ResponseEntity.ok(accessToken);
     }
 
     @PostMapping("/register")
@@ -42,6 +50,6 @@ public class AuthenticationController {
 
         repository.save(usuario);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

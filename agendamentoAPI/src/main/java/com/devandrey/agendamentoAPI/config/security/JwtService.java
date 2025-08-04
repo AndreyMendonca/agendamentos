@@ -1,6 +1,8 @@
 package com.devandrey.agendamentoAPI.config.security;
 
 import com.devandrey.agendamentoAPI.entities.Usuario;
+import com.devandrey.agendamentoAPI.exception.InvalidTokenException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +44,19 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("name", usuario.getNome());
         return claims;
+    }
+
+    public String getEmailFromToken(String tokenJwt){
+        try{
+            return Jwts
+                    .parser()
+                    .verifyWith(keyGenerator.getKey())
+                    .build()
+                    .parseSignedClaims(tokenJwt)
+                    .getPayload()
+                    .getSubject();
+        }catch (JwtException e){
+            throw new InvalidTokenException(e.getMessage());
+        }
     }
 }
